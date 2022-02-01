@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+      <div class="container py-5">
+        <div class="row justify-content-center">
+          <div class="col-md-8 p-5">
+            <div class="card">
+              <div class="card-header">
+                {{title}}
+              </div>
+              <div class="card-body">
+                {% if title == 'Редактировать запись' %}
+                  <form method="post" action="{% url 'posts:post_edit' id %}">
+                {% else %}
+                  <form method="post" action="{% url 'posts:post_create' %}">
+                {% endif %}
+                  <input type="hidden" name="csrfmiddlewaretoken" value="">
+                  {% csrf_token %}
+                  <div class="form-group row my-3 p-3">
+                      {{ form.text }}
+                      <span class="required text-danger" >*</span>
+                    <small id="id_text-help" class="form-text text-muted">
+                      Текст нового поста
+                    </small>
+                  </div>
+                  <div class="form-group row my-3 p-3">
+                      Group
+                    {{ form.group }}
+                    <small id="id_group-help" class="form-text text-muted">
+                      Группа, к которой будет относиться пост
+                    </small>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">
+                        {% if title == 'Редактировать запись' %}
+                          Сохранить
+                        {% else %}
+                          Добавить
+                        {% endif %}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}

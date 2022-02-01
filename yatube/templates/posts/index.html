@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Главная страница Yatube{% endblock %}
+{% block content %}
+<div class="container ">
+  <h1>Последние обновления на сайте</h1>
+  {% for post in page_obj %}
+  <article>
+    {% include 'includes/post.html' %}  
+    <a href="{{post.group.get_absolute_url}}">все записи группы</a>
+  </article>
+    {% if not forloop.last %}<hr>{% endif %}
+  {% endfor %}
+  {% include 'includes/paginator.html' %}
+</div>
+{% endblock %}
