@@ -19,7 +19,7 @@ class Group(models.Model):
         verbose_name_plural = 'Группы'
 
     def __str__(self):
-        return self.title        
+        return self.title
 
 
 class Post(models.Model):
