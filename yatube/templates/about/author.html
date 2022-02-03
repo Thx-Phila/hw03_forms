@@ -1,8 +1,14 @@
-{% extends "base.html" %}
-{% block title %}Об авторе проекта{% endblock %}
-{% block content %}
-<h1>Привет, я Яков</h1>
-<p>
-  Учусь на Python-разработчика
-</p>
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %}
+  Автор: Ворончихин Яков
 {% endblock %}
+{% block content %}
+  <div class="container py-5">
+    <h1>Автор: Ворончихин Яков</h1>
+  <p>Привет! Меня зовут Яков.
+    Я начинающий разработчик Python :)</p>
+  </div>
+{% endblock %}
+
+<img src="{% static "img/logo.png" %}"

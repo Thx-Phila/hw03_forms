@@ -16,15 +16,17 @@ def paginator_method(request, obj, if_has_get_param_page):
 
 
 def index(request):
+    template = 'posts/index.html'
     posts = Post.objects.all()
     page_obj = paginator_method(request, posts, 'page')
     context = {
-        'page_obj': page_obj,
+        'page_obj': page_obj
     }
-    return render(request, 'posts/index.html', context)
+    return render(request, template, context)
 
 
 def group_posts(request, slug):
+    template = 'posts/group_list.html'
     group = get_object_or_404(Group, slug=slug)
     posts = group.group.all()
     page_obj = paginator_method(request, posts, 'page')
@@ -33,10 +35,11 @@ def group_posts(request, slug):
         'posts': posts,
         'page_obj': page_obj
     }
-    return render(request, 'posts/group_list.html', context)
+    return render(request, template, context)
 
 
 def profile(request, username):
+    template = 'posts/profile.html'
     author = get_object_or_404(User, username=username)
     posts = author.posts.all()
     page_obj = paginator_method(request, posts, 'page')
@@ -44,10 +47,11 @@ def profile(request, username):
         'author': author,
         'page_obj': page_obj,
     }
-    return render(request, 'posts/profile.html', context)
+    return render(request, template, context)
 
 
 def post_detail(request, post_id):
+    template = 'posts/post_detail.html'
     post = get_object_or_404(Post, pk=post_id)
     count = post.author.posts.count()
 
@@ -55,18 +59,19 @@ def post_detail(request, post_id):
         'post': post,
         'count': count
     }
-    return render(request, 'posts/post_detail.html', context)
+    return render(request, template, context)
 
 
 @login_required
 def post_create(request):
     form = PostForm(request.POST or None)
+    template = 'posts/create_post.html'
     if form.is_valid():
         post = form.save(commit=False)
         post.author = request.user
         post.save()
         return redirect('posts:profile', request.user.username)
-    return render(request, 'posts/create_post.html', {'form': form})
+    return render(request, template, {'form': form})
 
 
 @login_required
