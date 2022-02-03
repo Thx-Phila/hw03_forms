@@ -8,9 +8,9 @@ from posts.forms import PostForm
 POSTS_QUANTITY: int = 10
 
 
-def paginator_method(request, obj, if_has_get_param_page):
-    paginator = Paginator(obj, POSTS_QUANTITY)
-    page_number = request.GET.get(if_has_get_param_page)
+def paginate(request, queryset):
+    paginator = Paginator(queryset, POSTS_QUANTITY)
+    page_number = request.GET.get
     page_obj = paginator.get_page(page_number)
     return page_obj
 
@@ -18,7 +18,7 @@ def paginator_method(request, obj, if_has_get_param_page):
 def index(request):
     template = 'posts/index.html'
     posts = Post.objects.all()
-    page_obj = paginator_method(request, posts, 'page')
+    page_obj = paginate(request, posts)
     context = {
         'page_obj': page_obj
     }
@@ -29,10 +29,9 @@ def group_posts(request, slug):
     template = 'posts/group_list.html'
     group = get_object_or_404(Group, slug=slug)
     posts = group.group.all()
-    page_obj = paginator_method(request, posts, 'page')
+    page_obj = paginate(request, posts)
     context = {
         'group': group,
-        'posts': posts,
         'page_obj': page_obj
     }
     return render(request, template, context)
@@ -42,7 +41,7 @@ def profile(request, username):
     template = 'posts/profile.html'
     author = get_object_or_404(User, username=username)
     posts = author.posts.all()
-    page_obj = paginator_method(request, posts, 'page')
+    page_obj = paginate(request, posts)
     context = {
         'author': author,
         'page_obj': page_obj,
