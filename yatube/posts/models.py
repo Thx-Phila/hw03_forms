@@ -5,19 +5,21 @@ User = get_user_model()
 
 
 class Group(models.Model):
-    title = models.CharField('Заголовок', max_length=200)
-    slug = models.SlugField('Идентификатор', unique=True)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        return f"/group/{self.slug}/"
+    title = models.CharField(
+        'Заголовок',
+        max_length=200,
+        help_text='Название группы'
+    )
+    slug = models.SlugField('Адрес', unique=True, help_text='Адрес группы')
+    description = models.TextField(
+        'Описание', help_text='Описание группы')
 
     class Meta:
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'
+
+    def __str__(self):
+        return self.title        
 
 
 class Post(models.Model):
@@ -31,7 +33,7 @@ class Post(models.Model):
     group = models.ForeignKey(
         Group,
         related_name="group",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True,
         help_text='Выберите группу'

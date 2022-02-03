@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
-{% block title %}Профайл пользователя {{ author }}{% endblock %}
+{% load user_filters %}
+{% block title %}
+  Все посты пользователя {{ author.get_full_name }}
+{% endblock %}
 {% block content %}
 <div class="container py-5">
-  <h1>Все посты пользователя {{ author }} </h1>
-  <h2>Количество постов пользователя: {{ posts_count }}</h2>
+  <h1>Все посты пользователя {{ author.get_full_name }} </h1>
+  <h2>Количество постов пользователя: {{ author_posts_count }} </h2>
   {% for post in page_obj %}
     <ul>
       <li>
@@ -14,9 +17,13 @@
       </li>
     </ul>
     <p>{{ post.text }}</p>
-    <a href="{{post.group.get_absolute_url}}">все записи группы</a>
+      <a href="{% url 'posts:post_detail' post.id %}">подробная информация </a>
+	    <br />
+	    {% if post.group %}
+	      <a href="{% url 'posts:group_page' post.group.slug %}">все записи группы</a>
+	  {% endif %}
     {% if not forloop.last %}<hr>{% endif %}
   {% endfor %}
-  {% include 'includes/paginator.html' %}
+  {% include 'posts/includes/paginator.html' %}
 </div>
 {% endblock %}
